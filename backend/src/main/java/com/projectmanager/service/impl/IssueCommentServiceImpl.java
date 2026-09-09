@@ -32,6 +32,7 @@ public class IssueCommentServiceImpl implements IssueCommentService {
     private final UserRepository userRepository;
     private final IssueMapper issueMapper;
     private final AuditLogService auditLogService;
+    private final com.projectmanager.service.NotificationService notificationService;
 
     @Override
     @Transactional
@@ -57,6 +58,27 @@ public class IssueCommentServiceImpl implements IssueCommentService {
                 issue.getId(),
                 "Added a comment to issue " + issue.getIssueKey()
         );
+
+        // Notify assignee if not the commenter
+        if (issue.getAssignee() != null && !issue.getAssignee().getId().equals(userId)) {
+            notificationService.sendNotification(
+                    issue.getAssignee(),
+                    user.getName() + " commented on issue " + issue.getIssueKey(),
+                    "ISSUE_COMMENT",
+                    issue.getIssueKey()
+            );
+        }
+
+        // Notify reporter if not the commenter and not the assignee
+        if (issue.getReporter() != null && !issue.getReporter().getId().equals(userId)
+                && (issue.getAssignee() == null || !issue.getReporter().getId().equals(issue.getAssignee().getId()))) {
+            notificationService.sendNotification(
+                    issue.getReporter(),
+                    user.getName() + " commented on issue " + issue.getIssueKey(),
+                    "ISSUE_COMMENT",
+                    issue.getIssueKey()
+            );
+        }
 
         return issueMapper.toCommentResponse(savedComment);
     }
