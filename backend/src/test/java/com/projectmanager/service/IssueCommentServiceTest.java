@@ -47,6 +47,9 @@ class IssueCommentServiceTest {
     @Mock
     private AuditLogService auditLogService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @Spy
     private UserMapper userMapper = new UserMapper();
 

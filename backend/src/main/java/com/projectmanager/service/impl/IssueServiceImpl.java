@@ -48,6 +48,7 @@ public class IssueServiceImpl implements IssueService {
     private final IssueLabelRepository issueLabelRepository;
     private final IssueMapper issueMapper;
     private final AuditLogService auditLogService;
+    private final com.projectmanager.service.NotificationService notificationService;
 
     @Override
     @Transactional
@@ -103,6 +104,15 @@ public class IssueServiceImpl implements IssueService {
                 savedIssue.getId(),
                 "Created issue " + issueKey + ": " + savedIssue.getTitle()
         );
+
+        if (assignee != null && !assignee.getId().equals(reporterUserId)) {
+            notificationService.sendNotification(
+                    assignee,
+                    reporter.getName() + " assigned you issue " + issueKey + ": " + savedIssue.getTitle(),
+                    "ISSUE_ASSIGNED",
+                    issueKey
+            );
+        }
 
         return issueMapper.toResponse(savedIssue);
     }
@@ -216,12 +226,31 @@ public class IssueServiceImpl implements IssueService {
                     issue.getId(),
                     "Status changed from " + oldStatus + " to " + request.getStatus()
             );
+
+            if (issue.getReporter() != null && !issue.getReporter().getId().equals(currentUserId)) {
+                notificationService.sendNotification(
+                        issue.getReporter(),
+                        currentUser.getName() + " changed status of " + issue.getIssueKey() + " to " + request.getStatus(),
+                        "ISSUE_STATUS_CHANGED",
+                        issue.getIssueKey()
+                );
+            }
         }
 
         if (request.getAssigneeId() != null) {
             User assignee = userRepository.findById(request.getAssigneeId())
                     .orElseThrow(() -> new ResourceNotFoundException("Assignee not found with id: " + request.getAssigneeId()));
+            boolean isNewAssignee = issue.getAssignee() == null || !issue.getAssignee().getId().equals(assignee.getId());
             issue.setAssignee(assignee);
+
+            if (isNewAssignee && !assignee.getId().equals(currentUserId)) {
+                notificationService.sendNotification(
+                        assignee,
+                        currentUser.getName() + " assigned you issue " + issue.getIssueKey() + ": " + issue.getTitle(),
+                        "ISSUE_ASSIGNED",
+                        issue.getIssueKey()
+                );
+            }
         }
 
         if (request.getMilestoneId() != null) {
@@ -269,6 +298,15 @@ public class IssueServiceImpl implements IssueService {
                     updatedIssue.getId(),
                     "Status changed from " + oldStatus + " to " + newStatus
             );
+
+            if (issue.getReporter() != null && !issue.getReporter().getId().equals(currentUserId)) {
+                notificationService.sendNotification(
+                        issue.getReporter(),
+                        currentUser.getName() + " changed status of " + issue.getIssueKey() + " to " + newStatus,
+                        "ISSUE_STATUS_CHANGED",
+                        issue.getIssueKey()
+                );
+            }
 
             return issueMapper.toResponse(updatedIssue);
         }
