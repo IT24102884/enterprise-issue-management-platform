@@ -211,13 +211,15 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                 <option value="CLOSED">Closed</option>
               </select>
 
-              <button
-                onClick={handleDeleteIssue}
-                title="Delete issue"
-                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+              {user?.role === 'ADMIN' && (
+                <button
+                  onClick={handleDeleteIssue}
+                  title="Delete issue"
+                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
 

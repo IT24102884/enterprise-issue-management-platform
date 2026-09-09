@@ -11,11 +11,15 @@ import {
   BarChart3,
   Users,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 export const ProjectsPage: React.FC = () => {
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [createProjectOpen, setCreateProjectOpen] = useState(false);
+
+  const canCreateProject = user?.role === 'ADMIN' || user?.role === 'PROJECT_MANAGER';
 
   const { data: projectsData, isLoading, refetch } = useQuery({
     queryKey: ['projects'],
@@ -39,13 +43,15 @@ export const ProjectsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setCreateProjectOpen(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-all hover:shadow"
-        >
-          <Plus className="w-4 h-4" />
-          Create Project
-        </button>
+        {canCreateProject && (
+          <button
+            onClick={() => setCreateProjectOpen(true)}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-all hover:shadow"
+          >
+            <Plus className="w-4 h-4" />
+            Create Project
+          </button>
+        )}
       </div>
 
       {/* Search Input */}
@@ -70,7 +76,7 @@ export const ProjectsPage: React.FC = () => {
           <p className="text-xs text-slate-400 mt-1 mb-4">
             {searchTerm ? 'Try adjusting your search term' : 'Create your first project to get started'}
           </p>
-          {!searchTerm && (
+          {!searchTerm && canCreateProject && (
             <button
               onClick={() => setCreateProjectOpen(true)}
               className="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-xl hover:bg-blue-700 transition-colors inline-flex items-center gap-1.5"

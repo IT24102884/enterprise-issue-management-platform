@@ -4,11 +4,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi, milestoneApi } from '../api';
 import { CreateMilestoneModal } from '../components/CreateMilestoneModal';
 import { Target, Plus, Calendar, CheckCircle2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import { format } from 'date-fns';
 
 export const MilestonesPage: React.FC = () => {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+
+  const canManageMilestones = user?.role === 'ADMIN' || user?.role === 'PROJECT_MANAGER';
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | undefined>(
     searchParams.get('projectId') ? Number(searchParams.get('projectId')) : undefined
@@ -78,7 +82,7 @@ export const MilestonesPage: React.FC = () => {
           </div>
         </div>
 
-        {selectedProjectId && (
+        {selectedProjectId && canManageMilestones && (
           <button
             onClick={() => setCreateMilestoneOpen(true)}
             className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 px-3.5 rounded-xl shadow-xs transition-colors self-start sm:self-center"
@@ -99,7 +103,7 @@ export const MilestonesPage: React.FC = () => {
           <p className="text-xs text-slate-400 mt-1 mb-4">
             Group your issues into time-boxed sprints or release targets
           </p>
-          {selectedProjectId && (
+          {selectedProjectId && canManageMilestones && (
             <button
               onClick={() => setCreateMilestoneOpen(true)}
               className="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-xl hover:bg-blue-700 transition-colors inline-flex items-center gap-1.5"
@@ -143,7 +147,7 @@ export const MilestonesPage: React.FC = () => {
                   </p>
                 </div>
 
-                {m.status === 'OPEN' && (
+                {m.status === 'OPEN' && canManageMilestones && (
                   <button
                     onClick={() => closeMutation.mutate(m.id)}
                     className="px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-slate-50 hover:bg-emerald-50 border border-slate-200 rounded-lg transition-colors flex items-center gap-1 flex-shrink-0"
