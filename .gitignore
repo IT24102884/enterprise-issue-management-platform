@@ -46,9 +46,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# ==================== DOCKER ====================
-docker-compose.override.yml
-
 # ==================== MISC ====================
 *.tmp
 *.bak
