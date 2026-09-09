@@ -1,46 +1,39 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-
-// Placeholder pages — will be replaced in later phases
-const ComingSoon = ({ page }: { page: string }) => (
-  <div className="flex items-center justify-center min-h-screen bg-gray-50">
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
-        Enterprise Issue Manager
-      </h1>
-      <p className="text-gray-500 text-lg">
-        <span className="font-medium text-blue-600">{page}</span> — Phase 1 Setup ✅
-      </p>
-      <p className="text-sm text-gray-400 mt-4">
-        Backend: <code className="bg-gray-100 px-2 py-1 rounded">http://localhost:8080</code>
-      </p>
-    </div>
-  </div>
-)
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { Layout } from './components/Layout';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { KanbanPage } from './pages/KanbanPage';
+import { MilestonesPage } from './pages/MilestonesPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 
 function App() {
   return (
-    <Routes>
-      {/* Auth routes */}
-      <Route path="/login" element={<ComingSoon page="Login" />} />
-      <Route path="/register" element={<ComingSoon page="Register" />} />
+    <AuthProvider>
+      <Routes>
+        {/* Public Auth routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      {/* App routes */}
-      <Route path="/dashboard" element={<ComingSoon page="Dashboard" />} />
-      <Route path="/projects" element={<ComingSoon page="Projects" />} />
-      <Route path="/projects/:projectId" element={<ComingSoon page="Project Detail" />} />
-      <Route path="/projects/:projectId/board" element={<ComingSoon page="Kanban Board" />} />
-      <Route path="/projects/:projectId/issues" element={<ComingSoon page="Issues" />} />
-      <Route path="/projects/:projectId/members" element={<ComingSoon page="Members" />} />
-      <Route path="/projects/:projectId/settings" element={<ComingSoon page="Settings" />} />
-      <Route path="/issues/:issueId" element={<ComingSoon page="Issue Detail" />} />
-      <Route path="/profile" element={<ComingSoon page="Profile" />} />
-      <Route path="/notifications" element={<ComingSoon page="Notifications" />} />
+        {/* Protected App Routes */}
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/kanban" element={<KanbanPage />} />
+          <Route path="/milestones" element={<MilestonesPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+        </Route>
 
-      {/* Default redirect */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
-  )
+        {/* Fallback Redirects */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

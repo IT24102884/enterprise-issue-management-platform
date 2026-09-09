@@ -18,8 +18,9 @@ const renderWithProviders = (ui: React.ReactElement) => {
 }
 
 describe('App', () => {
-  it('renders without crashing', () => {
+  it('renders login page when unauthenticated', () => {
     renderWithProviders(<App />)
-    expect(screen.getByText('Enterprise Issue Manager')).toBeTruthy()
+    expect(screen.getByText(/Welcome Back/i)).toBeTruthy()
+    expect(screen.getByPlaceholderText(/name@example.com/i)).toBeTruthy()
   })
 })
