@@ -148,3 +148,4 @@ class AuthServiceTest {
         assertThat(userDto.getEmail()).isEqualTo("john@example.com");
     }
 }
+

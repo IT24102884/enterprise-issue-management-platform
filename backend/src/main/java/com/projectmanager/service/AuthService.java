@@ -10,3 +10,4 @@ public interface AuthService {
     AuthResponse login(LoginRequest loginRequest);
     UserDto getCurrentUser(Long userId);
 }
+

@@ -99,3 +99,4 @@ public class AuthServiceImpl implements AuthService {
         return userMapper.toDto(user);
     }
 }
+

@@ -31,3 +31,4 @@ public class RegisterRequest {
     @Builder.Default
     private Role role = Role.DEVELOPER;
 }
+
