@@ -21,7 +21,8 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string;
+  tokenType?: string;
   user: User;
 }
 

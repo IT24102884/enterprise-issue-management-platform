@@ -112,14 +112,14 @@ export const LoginPage: React.FC = () => {
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => handleDemoLogin('admin@example.com', 'Admin@1234')}
+              onClick={() => handleDemoLogin('admin@example.com', 'password123')}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-700 transition-colors text-left"
             >
               👑 <span className="font-semibold">Admin:</span> admin@example.com
             </button>
             <button
               type="button"
-              onClick={() => handleDemoLogin('developer@example.com', 'Dev@1234')}
+              onClick={() => handleDemoLogin('developer@example.com', 'password123')}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-700 transition-colors text-left"
             >
               💻 <span className="font-semibold">Dev:</span> developer@example.com
