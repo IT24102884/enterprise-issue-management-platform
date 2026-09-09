@@ -42,7 +42,7 @@ export const DashboardPage: React.FC = () => {
           </p>
         </div>
 
-        {openCreateIssue && (
+        {openCreateIssue && user?.role !== 'VIEWER' && (
           <button
             onClick={openCreateIssue}
             className="self-start sm:self-center px-4 py-2.5 bg-white text-blue-700 font-semibold rounded-xl text-xs shadow-sm hover:bg-blue-50 transition-all hover:shadow"

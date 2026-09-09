@@ -17,7 +17,7 @@ import { KanbanCard } from './KanbanCard';
 
 interface KanbanBoardProps {
   issues: Issue[];
-  onStatusChange: (issueId: number, newStatus: IssueStatus) => void;
+  onStatusChange?: (issueId: number, newStatus: IssueStatus) => void;
   onCardClick: (issue: Issue) => void;
   onAddIssue?: (status: IssueStatus) => void;
 }
@@ -78,7 +78,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = ({
       }
     }
 
-    if (targetStatus && draggedIssue.status !== targetStatus) {
+    if (targetStatus && draggedIssue.status !== targetStatus && onStatusChange) {
       onStatusChange(draggedIssue.id, targetStatus);
     }
   };

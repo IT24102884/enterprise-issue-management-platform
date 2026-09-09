@@ -10,6 +10,8 @@ import {
   PlusCircle,
 } from 'lucide-react';
 
+import { useAuth } from '../context/AuthContext';
+
 interface SidebarProps {
   isOpen: boolean;
   onClose?: () => void;
@@ -17,6 +19,8 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpenCreateIssue }) => {
+  const { user } = useAuth();
+  const canCreateIssue = user?.role !== 'VIEWER';
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/projects', label: 'Projects', icon: FolderGit2 },
@@ -44,7 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpenCreateI
       >
         <div className="space-y-6">
           {/* Quick Action Button */}
-          {onOpenCreateIssue && (
+          {onOpenCreateIssue && canCreateIssue && (
             <button
               onClick={onOpenCreateIssue}
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-all hover:shadow focus:ring-2 focus:ring-blue-500/20"

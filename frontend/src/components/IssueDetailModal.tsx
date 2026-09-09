@@ -39,6 +39,7 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
 }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const isViewer = user?.role === 'VIEWER';
 
   const [issue, setIssue] = useState<Issue | null>(null);
   const [comments, setComments] = useState<IssueComment[]>([]);
@@ -201,8 +202,9 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
             <div className="flex items-center gap-2">
               <select
                 value={issue.status}
+                disabled={isViewer}
                 onChange={(e) => handleStatusChange(e.target.value as IssueStatus)}
-                className="text-xs font-semibold rounded-lg border border-slate-300 px-3 py-1.5 bg-white text-slate-800 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                className="text-xs font-semibold rounded-lg border border-slate-300 px-3 py-1.5 bg-white text-slate-800 focus:ring-2 focus:ring-blue-500/20 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <option value="TODO">To Do</option>
                 <option value="IN_PROGRESS">In Progress</option>
@@ -284,23 +286,25 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                 {activeTab === 'comments' && (
                   <div className="space-y-4">
                     {/* Add Comment Input */}
-                    <form onSubmit={handleAddComment} className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Write a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        className="flex-1 text-xs rounded-lg border border-slate-300 px-3 py-2 bg-white text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
-                      />
-                      <button
-                        type="submit"
-                        disabled={isPostingComment || !newComment.trim()}
-                        className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-1"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                        Post
-                      </button>
-                    </form>
+                    {!isViewer && (
+                      <form onSubmit={handleAddComment} className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          className="flex-1 text-xs rounded-lg border border-slate-300 px-3 py-2 bg-white text-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                        />
+                        <button
+                          type="submit"
+                          disabled={isPostingComment || !newComment.trim()}
+                          className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-1"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          Post
+                        </button>
+                      </form>
+                    )}
 
                     {/* Comments List */}
                     <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
@@ -381,8 +385,9 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                 <label className="text-slate-500 font-medium block mb-1">Priority</label>
                 <select
                   value={issue.priority}
+                  disabled={isViewer}
                   onChange={(e) => handlePriorityChange(e.target.value as IssuePriority)}
-                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none"
+                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <option value="LOW">Low</option>
                   <option value="MEDIUM">Medium</option>
@@ -396,8 +401,9 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                 <label className="text-slate-500 font-medium block mb-1">Assignee</label>
                 <select
                   value={issue.assignee?.id || ''}
+                  disabled={isViewer}
                   onChange={(e) => handleAssigneeChange(e.target.value ? Number(e.target.value) : undefined)}
-                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none"
+                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <option value="">Unassigned</option>
                   {members.map((m) => (
@@ -413,8 +419,9 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                 <label className="text-slate-500 font-medium block mb-1">Milestone / Sprint</label>
                 <select
                   value={issue.milestoneId || ''}
+                  disabled={isViewer}
                   onChange={(e) => handleMilestoneChange(e.target.value ? Number(e.target.value) : undefined)}
-                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none"
+                  className="w-full text-xs rounded-lg border border-slate-300 p-2 bg-white text-slate-800 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <option value="">None</option>
                   {milestones.map((m) => (

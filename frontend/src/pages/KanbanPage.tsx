@@ -7,10 +7,15 @@ import { KanbanBoard } from '../components/Kanban/KanbanBoard';
 import { CreateIssueModal } from '../components/CreateIssueModal';
 import { IssueDetailModal } from '../components/IssueDetailModal';
 import { Plus, Search, Kanban, FolderGit2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const KanbanPage: React.FC = () => {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+
+  const canCreateIssue = user?.role !== 'VIEWER';
+  const canChangeStatus = user?.role !== 'VIEWER';
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | undefined>(
     searchParams.get('projectId') ? Number(searchParams.get('projectId')) : undefined
@@ -178,13 +183,15 @@ export const KanbanPage: React.FC = () => {
           </select>
 
           {/* Add Issue Button */}
-          <button
-            onClick={() => setCreateIssueOpen(true)}
-            className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 px-3.5 rounded-xl shadow-xs transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            New Issue
-          </button>
+          {canCreateIssue && (
+            <button
+              onClick={() => setCreateIssueOpen(true)}
+              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 px-3.5 rounded-xl shadow-xs transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              New Issue
+            </button>
+          )}
         </div>
       </div>
 
@@ -200,9 +207,9 @@ export const KanbanPage: React.FC = () => {
       ) : (
         <KanbanBoard
           issues={filteredIssues}
-          onStatusChange={handleStatusChange}
+          onStatusChange={canChangeStatus ? handleStatusChange : undefined}
           onCardClick={(issue) => setSelectedIssueId(issue.id)}
-          onAddIssue={() => setCreateIssueOpen(true)}
+          onAddIssue={canCreateIssue ? () => setCreateIssueOpen(true) : undefined}
         />
       )}
 
