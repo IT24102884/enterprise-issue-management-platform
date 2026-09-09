@@ -174,3 +174,4 @@ class ProjectServiceTest {
         assertThat(stats.getProgressPercentage()).isEqualTo(50.0); // 2 of 4 completed = 50%
     }
 }
+

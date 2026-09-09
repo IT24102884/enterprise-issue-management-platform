@@ -10,3 +10,4 @@ public interface ProjectMemberService {
     List<ProjectMemberResponse> getProjectMembers(Long projectId);
     void removeMember(Long projectId, Long userId);
 }
+

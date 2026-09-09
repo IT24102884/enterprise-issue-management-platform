@@ -17,3 +17,4 @@ public class OrganizationResponse {
     private String description;
     private OffsetDateTime createdAt;
 }
+

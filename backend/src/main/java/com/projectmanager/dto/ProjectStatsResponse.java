@@ -22,3 +22,4 @@ public class ProjectStatsResponse {
     private double progressPercentage;
     private int totalMembers;
 }
+

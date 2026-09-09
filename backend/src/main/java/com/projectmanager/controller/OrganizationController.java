@@ -44,3 +44,4 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationService.getOrganizationById(id));
     }
 }
+

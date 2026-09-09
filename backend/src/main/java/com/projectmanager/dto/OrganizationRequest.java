@@ -19,3 +19,4 @@ public class OrganizationRequest {
 
     private String description;
 }
+

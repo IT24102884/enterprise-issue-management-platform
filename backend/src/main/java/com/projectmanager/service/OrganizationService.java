@@ -10,3 +10,4 @@ public interface OrganizationService {
     OrganizationResponse getOrganizationById(Long id);
     List<OrganizationResponse> getAllOrganizations();
 }
+

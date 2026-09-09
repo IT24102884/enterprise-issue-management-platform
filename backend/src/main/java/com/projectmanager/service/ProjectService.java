@@ -12,3 +12,4 @@ public interface ProjectService {
     void deleteProject(Long id);
     ProjectStatsResponse getProjectStats(Long id);
 }
+

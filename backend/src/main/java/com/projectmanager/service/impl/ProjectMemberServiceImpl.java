@@ -75,3 +75,4 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         log.info("Removed user id {} from project id {}", userId, projectId);
     }
 }
+

@@ -185,3 +185,4 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.toDto(project, memberCount, totalIssues, openIssues, progress);
     }
 }
+

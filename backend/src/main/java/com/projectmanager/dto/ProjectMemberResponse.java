@@ -19,3 +19,4 @@ public class ProjectMemberResponse {
     private Role role;
     private OffsetDateTime joinedAt;
 }
+
