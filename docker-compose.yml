@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # ──────────────────── PostgreSQL ────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: pm_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: projectmanager
+      POSTGRES_USER: pmuser
+      POSTGRES_PASSWORD: pmpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pmuser -d projectmanager"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pm_network
+
+  # ──────────────────── Backend ────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pm_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/projectmanager
+      DATABASE_USERNAME: pmuser
+      DATABASE_PASSWORD: pmpassword
+      JWT_SECRET: ${JWT_SECRET:-changeThisInProductionToALongRandomSecretKey}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:80}
+    ports:
+      - "8080:8080"
+    networks:
+      - pm_network
+
+  # ──────────────────── Frontend ────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pm_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - pm_network
+
+volumes:
+  postgres_data:
+
+networks:
+  pm_network:
+    driver: bridge
