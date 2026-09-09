@@ -24,3 +24,4 @@ CREATE INDEX idx_issues_type ON issues(type);
 CREATE INDEX idx_issues_assignee ON issues(assignee_id);
 CREATE INDEX idx_issues_reporter ON issues(reporter_id);
 CREATE INDEX idx_issues_milestone ON issues(milestone_id);
+

@@ -24,3 +24,4 @@ public interface IssueRepository extends JpaRepository<Issue, Long>, JpaSpecific
     @Query("SELECT MAX(CAST(SUBSTRING(i.issueKey, LENGTH(:prefix) + 2) AS int)) FROM Issue i WHERE i.issueKey LIKE CONCAT(:prefix, '-%')")
     Integer findMaxSequenceByPrefix(@Param("prefix") String prefix);
 }
+

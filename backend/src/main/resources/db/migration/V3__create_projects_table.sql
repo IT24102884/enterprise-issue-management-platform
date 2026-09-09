@@ -16,3 +16,4 @@ CREATE TABLE projects (
 CREATE INDEX idx_projects_org ON projects(organization_id);
 CREATE INDEX idx_projects_key ON projects(key);
 CREATE INDEX idx_projects_status ON projects(status);
+

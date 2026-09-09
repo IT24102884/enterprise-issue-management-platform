@@ -29,3 +29,4 @@ public class IssueLabel {
     @Builder.Default
     private String color = "#3b82f6";
 }
+

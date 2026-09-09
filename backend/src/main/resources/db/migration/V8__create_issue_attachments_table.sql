@@ -11,3 +11,4 @@ CREATE TABLE issue_attachments (
 );
 
 CREATE INDEX idx_attachments_issue ON issue_attachments(issue_id);
+

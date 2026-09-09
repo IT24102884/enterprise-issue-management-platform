@@ -14,3 +14,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     boolean existsByKey(String key);
     Page<Project> findByOrganizationId(Long organizationId, Pageable pageable);
 }
+

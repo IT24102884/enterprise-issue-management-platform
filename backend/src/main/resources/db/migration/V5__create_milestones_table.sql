@@ -11,3 +11,4 @@ CREATE TABLE milestones (
 );
 
 CREATE INDEX idx_milestones_project ON milestones(project_id);
+

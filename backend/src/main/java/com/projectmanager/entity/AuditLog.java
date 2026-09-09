@@ -39,3 +39,4 @@ public class AuditLog {
     @Column(columnDefinition = "TEXT")
     private String metadata;
 }
+

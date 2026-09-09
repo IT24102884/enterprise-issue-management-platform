@@ -14,3 +14,4 @@ CREATE TABLE issue_label_mapping (
     label_id BIGINT NOT NULL REFERENCES issue_labels(id) ON DELETE CASCADE,
     PRIMARY KEY (issue_id, label_id)
 );
+

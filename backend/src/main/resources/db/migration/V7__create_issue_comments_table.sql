@@ -10,3 +10,4 @@ CREATE TABLE issue_comments (
 
 CREATE INDEX idx_comments_issue ON issue_comments(issue_id);
 CREATE INDEX idx_comments_user ON issue_comments(user_id);
+

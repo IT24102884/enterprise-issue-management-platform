@@ -95,3 +95,4 @@ public class Issue {
     @Builder.Default
     private List<IssueAttachment> attachments = new ArrayList<>();
 }
+

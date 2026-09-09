@@ -6,3 +6,4 @@ public enum IssuePriority {
     HIGH,
     CRITICAL
 }
+

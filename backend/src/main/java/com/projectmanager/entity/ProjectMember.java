@@ -38,3 +38,4 @@ public class ProjectMember {
     @Column(name = "joined_at", nullable = false, updatable = false)
     private OffsetDateTime joinedAt;
 }
+

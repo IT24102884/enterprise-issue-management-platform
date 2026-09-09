@@ -6,3 +6,4 @@ public enum IssueType {
     FEATURE,
     IMPROVEMENT
 }
+

@@ -10,3 +10,4 @@ import java.util.List;
 public interface IssueAttachmentRepository extends JpaRepository<IssueAttachment, Long> {
     List<IssueAttachment> findByIssueId(Long issueId);
 }
+
