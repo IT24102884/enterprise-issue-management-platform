@@ -12,5 +12,6 @@ import java.util.List;
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     Page<AuditLog> findByEntityTypeAndEntityIdOrderByTimestampDesc(String entityType, Long entityId, Pageable pageable);
     List<AuditLog> findTop20ByOrderByTimestampDesc();
+    List<AuditLog> findTop10ByUserIdOrderByTimestampDesc(Long userId);
 }
 
